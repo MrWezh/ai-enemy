@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ba8ls1avjr2d1"]
+
+[ext_resource type="Texture2D" uid="uid://6v7qucer63vb" path="res://Assets/Enemys.png" id="1_5x5wr"]
+[ext_resource type="Script" uid="uid://msij131jy4u5" path="res://Scripts/RedEnemy.cs" id="1_unfu4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dg8m"]
+atlas = ExtResource("1_5x5wr")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4k4ca"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dg8m")
+}],
+"loop": true,
+"name": &"rojo",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8lwso"]
+size = Vector2(12, 14)
+
+[node name="RedEnemy" type="CharacterBody2D" unique_id=2144716337]
+script = ExtResource("1_unfu4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=358083140]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_4k4ca")
+animation = &"rojo"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1103282597]
+shape = SubResource("RectangleShape2D_8lwso")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=774119357]
