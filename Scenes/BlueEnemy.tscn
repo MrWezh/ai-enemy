@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://ib3ekin4iiry"]
+
+[ext_resource type="Texture2D" uid="uid://6v7qucer63vb" path="res://Assets/Enemys.png" id="1_5k1sr"]
+[ext_resource type="Script" uid="uid://6pgdh6xrbfmm" path="res://Scripts/BlueEnemy.cs" id="1_osllk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uca81"]
+atlas = ExtResource("1_5k1sr")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oyqi7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uca81")
+}],
+"loop": true,
+"name": &"azul",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nm5ek"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_htaod"]
+radius = 60.0
+
+[node name="BlueEnemy" type="CharacterBody2D" unique_id=2093071338]
+collision_layer = 4
+script = ExtResource("1_osllk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1450710468]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_oyqi7")
+animation = &"azul"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=884009109]
+position = Vector2(0, 0.5)
+shape = SubResource("CircleShape2D_nm5ek")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=234746317]
+path_desired_distance = 3.0
+target_desired_distance = 3.0
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 4.0
+debug_enabled = true
+
+[node name="DetectArea" type="Area2D" parent="." unique_id=1806398966]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea" unique_id=674540561]
+shape = SubResource("CircleShape2D_htaod")
+debug_color = Color(0.1954293, 0.51530874, 1, 0.41960785)
+
+[connection signal="body_entered" from="DetectArea" to="." method="_on_detect_area_body_entered"]
+[connection signal="body_exited" from="DetectArea" to="." method="_on_detect_area_body_exited"]

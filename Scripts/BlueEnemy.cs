@@ -1,19 +1,14 @@
 using Godot;
 using System.Linq;
 
-public partial class RedEnemy : CharacterBody2D
+public partial class BlueEnemy : CharacterBody2D
 {
     [Export] public float Velocidad = 50.0f;
-    [Export] private Marker2D[] _puntosPatrulla;
+    [Export] private Marker2D _puntoInicial;
 
-    private Vector2[] _posicionesPatrulla;
-    private int _indiceActual = 0;
-    private bool _avanzando = true;
-
-    // IA y Navegación
+    private bool _perseguir = false;
     private NavigationAgent2D _navAgent;
     private Node2D _jugadorObjetivo = null;
-    private bool _persiguiendo = false;
 
     public override void _Ready()
     {
@@ -29,41 +24,29 @@ public partial class RedEnemy : CharacterBody2D
         // Espera al primer frame de física para que el mapa de navegación
         // y las posiciones globales de los Marker2D estén listas.
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
-        InicializarPosiciones();
 
-        if (_posicionesPatrulla != null && _posicionesPatrulla.Length > 0)
+        if (_puntoInicial != null)
         {
-            _navAgent.TargetPosition = _posicionesPatrulla[_indiceActual];
-        }
-    }
-
-    private void InicializarPosiciones()
-    {
-        if (_puntosPatrulla != null && _puntosPatrulla.Length > 0)
-        {
-            _posicionesPatrulla = _puntosPatrulla
-                .Where(m => m != null)
-                .Select(m => m.GlobalPosition)
-                .ToArray();
+            _navAgent.TargetPosition = _puntoInicial.GlobalPosition;
         }
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_posicionesPatrulla == null || _posicionesPatrulla.Length == 0)
+        if (_puntoInicial == null)
             return;
 
         // 1. Actualizar el destino del agente según estado
-        if (_persiguiendo && GodotObject.IsInstanceValid(_jugadorObjetivo))
+        if (_perseguir && GodotObject.IsInstanceValid(_jugadorObjetivo))
         {
+			GD.Print("Persecución activa. Actualizando destino al jugador.");
             _navAgent.TargetPosition = _jugadorObjetivo.GlobalPosition;
         }
 
         // 2. Si llegó al punto de patrulla, avanzar al siguiente
-        if (!_persiguiendo && _navAgent.IsTargetReached())
+        if (!_perseguir && _navAgent.IsTargetReached())
         {
-            ActualizarSiguienteIndice();
-            _navAgent.TargetPosition = _posicionesPatrulla[_indiceActual];
+            _navAgent.TargetPosition = _puntoInicial.GlobalPosition;
             return;
         }
 
@@ -79,30 +62,6 @@ public partial class RedEnemy : CharacterBody2D
         }
     }
 
-    private void ActualizarSiguienteIndice()
-    {
-        if (_posicionesPatrulla.Length <= 1) return;
-
-        if (_avanzando)
-        {
-            _indiceActual++;
-            // Sin -1: así el enemigo SÍ llega al último punto antes de volver
-            if (_indiceActual >= _posicionesPatrulla.Length)
-            {
-                _indiceActual = _posicionesPatrulla.Length - 1;
-                _avanzando = false;
-            }
-        }
-        else
-        {
-            _indiceActual--;
-            if (_indiceActual <= 0)
-            {
-                _indiceActual = 0;
-                _avanzando = true;
-            }
-        }
-    }
 
     // --- SEÑALES DEL AREA2D DE DETECCIÓN ---
 
@@ -111,8 +70,9 @@ public partial class RedEnemy : CharacterBody2D
         // Más idiomático en C# que GetType() == typeof(Player)
         if (body is Player player)
         {
+		GD.Print($"Cuerpo detectado: {body.Name} ({body.GetType().Name})");
             _jugadorObjetivo = player;
-            _persiguiendo = true;
+            _perseguir = true;
         }
     }
 
@@ -120,13 +80,13 @@ public partial class RedEnemy : CharacterBody2D
     {
         if (body == _jugadorObjetivo)
         {
-            _persiguiendo = false;
+            _perseguir = false;
             _jugadorObjetivo = null;
 
             // Reasignamos explícitamente para que retome la patrulla de inmediato
-            if (_posicionesPatrulla != null && _posicionesPatrulla.Length > 0)
+            if (_puntoInicial != null)
             {
-                _navAgent.TargetPosition = _posicionesPatrulla[_indiceActual];
+                _navAgent.TargetPosition = _puntoInicial.GlobalPosition;
             }
         }
     }
