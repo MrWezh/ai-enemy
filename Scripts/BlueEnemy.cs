@@ -39,7 +39,6 @@ public partial class BlueEnemy : CharacterBody2D
         // 1. Actualizar el destino del agente según estado
         if (_perseguir && GodotObject.IsInstanceValid(_jugadorObjetivo))
         {
-			GD.Print("Persecución activa. Actualizando destino al jugador.");
             _navAgent.TargetPosition = _jugadorObjetivo.GlobalPosition;
         }
 
@@ -70,13 +69,12 @@ public partial class BlueEnemy : CharacterBody2D
         // Más idiomático en C# que GetType() == typeof(Player)
         if (body is Player player)
         {
-		GD.Print($"Cuerpo detectado: {body.Name} ({body.GetType().Name})");
             _jugadorObjetivo = player;
             _perseguir = true;
         }
     }
 
-    private void _on_detect_area_body_exited(Node2D body)
+    private void _on_perseguir_area_body_exited(Node2D body)
     {
         if (body == _jugadorObjetivo)
         {

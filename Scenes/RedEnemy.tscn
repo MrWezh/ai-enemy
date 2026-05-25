@@ -21,10 +21,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_unfu4"]
 radius = 6.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_unfu4"]
-size = Vector2(85, 58)
+[sub_resource type="CircleShape2D" id="CircleShape2D_2evpl"]
+radius = 50.0
 
-[node name="RedEnemy" type="CharacterBody2D" unique_id=2144716337 node_paths=PackedStringArray("_puntosPatrulla")]
+[node name="RedEnemy" type="CharacterBody2D" unique_id=2144716337 node_paths=PackedStringArray("_puntosPatrulla") groups=["enemy"]]
 collision_layer = 4
 script = ExtResource("1_unfu4")
 _puntosPatrulla = []
@@ -34,7 +34,7 @@ texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_4k4ca")
 animation = &"rojo"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1103282597]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1103282597 groups=["enemy"]]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_unfu4")
 
@@ -52,8 +52,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea" unique_id=420139902]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_unfu4")
+shape = SubResource("CircleShape2D_2evpl")
 debug_color = Color(0.990779, 0.09413368, 1.92523e-07, 0.41960785)
 
 [connection signal="body_entered" from="DetectArea" to="." method="_on_detect_area_body_entered"]

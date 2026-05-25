@@ -27,4 +27,15 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
 	}
 
+	private void _on_hitbox_body_entered(Node2D body)
+	{
+		if (body.IsInGroup("enemy"))
+		{
+			 GetTree().CallDeferred(
+                SceneTree.MethodName.ChangeSceneToFile,
+                "res://Scenes/Main.tscn"
+            );
+		}
+	}
+
 }

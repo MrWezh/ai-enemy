@@ -2,9 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://kj8lajktihop" path="res://Assets/IAEnemyTileSets.png" id="1_r150o"]
 [ext_resource type="PackedScene" uid="uid://dx11jinovdhb" path="res://Scenes/player.tscn" id="2_idj7w"]
-[ext_resource type="Script" uid="uid://b7oqpffc62a2" path="res://Scripts/Player.cs" id="3_kln2b"]
 [ext_resource type="PackedScene" uid="uid://ba8ls1avjr2d1" path="res://Scenes/RedEnemy.tscn" id="4_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://ib3ekin4iiry" path="res://Scenes/BlueEnemy.tscn" id="5_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://bc1117e8w43pc" path="res://Scenes/yellow_enemy.tscn" id="6_v1gob"]
+[ext_resource type="Script" uid="uid://bk7kxbivtvgfr" path="res://Scripts/Exit.cs" id="7_jw32o"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_rgh2o"]
 
@@ -65,7 +66,8 @@ physics_layer_0/collision_layer = 1
 navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_idj7w")
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_grg3l"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1gob"]
+size = Vector2(16, 17)
 
 [node name="Main" type="Node" unique_id=1421147368]
 
@@ -84,20 +86,33 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAFABAAAAAAABAAAAAAACAAAAAAACAAE
 tile_set = SubResource("TileSet_kln2b")
 
 [node name="Player" parent="." unique_id=190692537 instance=ExtResource("2_idj7w")]
-position = Vector2(24, 22)
-script = ExtResource("3_kln2b")
+position = Vector2(24, 32)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1164888894]
 position = Vector2(245, 151)
 zoom = Vector2(2, 2)
 
-[node name="RedEnemy" parent="." unique_id=2144716337 node_paths=PackedStringArray("_puntosPatrulla") instance=ExtResource("4_rgh2o")]
-position = Vector2(83.52821, 280)
-_puntosPatrulla = [NodePath("../PuntosPatrulla/Red1"), NodePath("../PuntosPatrulla/Red2"), NodePath("../PuntosPatrulla/Red3"), NodePath("../PuntosPatrulla/Red4")]
+[node name="Enemys" type="Node" parent="." unique_id=1475104715]
 
-[node name="AzulEnemy" parent="." unique_id=2093071338 node_paths=PackedStringArray("_puntoInicial") instance=ExtResource("5_pbw6q")]
+[node name="RedEnemy" parent="Enemys" unique_id=2144716337 node_paths=PackedStringArray("_puntosPatrulla") instance=ExtResource("4_rgh2o")]
+position = Vector2(83.52821, 280)
+_puntosPatrulla = [NodePath("../../PuntosPatrulla/Red1"), NodePath("../../PuntosPatrulla/Red2"), NodePath("../../PuntosPatrulla/Red3"), NodePath("../../PuntosPatrulla/Red4")]
+
+[node name="RedEnemy2" parent="Enemys" unique_id=1113834040 node_paths=PackedStringArray("_puntosPatrulla") instance=ExtResource("4_rgh2o")]
+position = Vector2(326, 284)
+_puntosPatrulla = [NodePath("../../PuntosPatrulla/2Red1"), NodePath("../../PuntosPatrulla/2Red2"), NodePath("../../PuntosPatrulla/2Red3")]
+
+[node name="AzulEnemy" parent="Enemys" unique_id=2093071338 node_paths=PackedStringArray("_puntoInicial") instance=ExtResource("5_pbw6q")]
 position = Vector2(191, 138)
-_puntoInicial = NodePath("../PuntosPatrulla/Azul1")
+_puntoInicial = NodePath("../../PuntosPatrulla/Azul1")
+
+[node name="YellowEnemy" parent="Enemys" unique_id=837611259 node_paths=PackedStringArray("_puntosPatrulla") instance=ExtResource("6_v1gob")]
+position = Vector2(152, 250)
+_puntosPatrulla = [NodePath("../../PuntosPatrulla/Yellow1"), NodePath("../../PuntosPatrulla/Yellow2"), NodePath("../../PuntosPatrulla/Yellow3"), NodePath("../../PuntosPatrulla/Yellow4"), NodePath("../../PuntosPatrulla/Yellow5")]
+
+[node name="YellowEnemy2" parent="Enemys" unique_id=730277309 node_paths=PackedStringArray("_puntosPatrulla") instance=ExtResource("6_v1gob")]
+position = Vector2(283, 27)
+_puntosPatrulla = [NodePath("../../PuntosPatrulla/2Yellow1"), NodePath("../../PuntosPatrulla/2Yellow2"), NodePath("../../PuntosPatrulla/2Yellow3")]
 
 [node name="PuntosPatrulla" type="Node" parent="." unique_id=1341100747]
 
@@ -116,5 +131,47 @@ position = Vector2(119, 27)
 [node name="Azul1" type="Marker2D" parent="PuntosPatrulla" unique_id=1191142784]
 position = Vector2(191, 138)
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=784788341]
-navigation_polygon = SubResource("NavigationPolygon_grg3l")
+[node name="2Red1" type="Marker2D" parent="PuntosPatrulla" unique_id=1850802241]
+position = Vector2(327, 284)
+
+[node name="2Red2" type="Marker2D" parent="PuntosPatrulla" unique_id=1528726783]
+position = Vector2(327, 93)
+
+[node name="2Red3" type="Marker2D" parent="PuntosPatrulla" unique_id=95823759]
+position = Vector2(265, 93)
+
+[node name="Yellow1" type="Marker2D" parent="PuntosPatrulla" unique_id=1755507175]
+position = Vector2(151, 202)
+
+[node name="Yellow2" type="Marker2D" parent="PuntosPatrulla" unique_id=1955579515]
+position = Vector2(152, 60)
+
+[node name="Yellow3" type="Marker2D" parent="PuntosPatrulla" unique_id=1637979251]
+position = Vector2(357, 60)
+
+[node name="Yellow4" type="Marker2D" parent="PuntosPatrulla" unique_id=383117642]
+position = Vector2(360, 170)
+
+[node name="Yellow5" type="Marker2D" parent="PuntosPatrulla" unique_id=1683875811]
+position = Vector2(391, 59)
+
+[node name="2Yellow1" type="Marker2D" parent="PuntosPatrulla" unique_id=484669723]
+position = Vector2(263, 28)
+
+[node name="2Yellow2" type="Marker2D" parent="PuntosPatrulla" unique_id=824578689]
+position = Vector2(424, 27)
+
+[node name="2Yellow3" type="Marker2D" parent="PuntosPatrulla" unique_id=1778390391]
+position = Vector2(424, 235)
+
+[node name="Exit" type="Area2D" parent="." unique_id=849660891]
+position = Vector2(421, 283)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("7_jw32o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1727457725]
+position = Vector2(2, 1.5)
+shape = SubResource("RectangleShape2D_v1gob")
+
+[connection signal="body_entered" from="Exit" to="Exit" method="_on_body_entered"]
